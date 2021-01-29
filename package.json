@@ -1,0 +1,40 @@
+{
+  "name": "vincit-assignment",
+  "version": "1.0.0",
+  "description": "An assignment for a job at Vincit",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf build && tsc --build",
+    "start-ts": "NODE_ENV=production ts-node src/index.ts",
+    "dev": "NODE_ENV=development ts-node-dev src/index.ts",
+    "start": "NODE_ENV=production node build/src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koxanybak/vincit-assignment.git"
+  },
+  "author": "Leevi Heikkilä",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koxanybak/vincit-assignment/issues"
+  },
+  "homepage": "https://github.com/koxanybak/vincit-assignment#readme",
+  "dependencies": {
+    "@types/papaparse": "^5.2.5",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "express-fileupload": "^1.2.1",
+    "papaparse": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/express-fileupload": "^1.1.6",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "eslint": "^7.18.0",
+    "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.1",
+    "typescript": "^4.1.3"
+  }
+}
