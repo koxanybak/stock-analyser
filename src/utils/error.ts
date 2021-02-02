@@ -18,6 +18,7 @@ export const unknownEndpoint = (_req: Request, _res: Response, next: NextFunctio
 };
 
 
+// Error logger middleware
 export const errorLogger = (err: HttpError, req: Request, _res: Response, next: NextFunction): void => {
     const status = err.status || 500;
 
@@ -37,6 +38,7 @@ export const errorLogger = (err: HttpError, req: Request, _res: Response, next: 
 };
 
 
+// Handles errors thrown in endpoints
 export const errorHandler = (err: HttpError, _req: Request, res: Response, _next: NextFunction): void => {
     const status = err.status || 500;
     const httpMessage = STATUS_CODES[status]; // Bad request, Not found etc.

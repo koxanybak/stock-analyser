@@ -1,4 +1,6 @@
-// All money values are assumed to be dollars, for now.
+import { parseMoney } from "./number";
+
+// All money values are just numerals without a curreny, for now.
 // A row currently doesn't allow for empty columns.
 // I know some csvs might contain them but I thought that this is good enough for an MVP.
 export interface StockDataRow {
@@ -11,7 +13,7 @@ export interface StockDataRow {
 }
 
 // This makes it clearer to parse the stock data and less error prone if row format changes
-export const dataIndexes = {
+const dataIndexes = {
     date: 0,
     closeLast: 1,
     volume: 2,
@@ -21,9 +23,10 @@ export const dataIndexes = {
 };
 
 // The length the csv row should have
-export const numKeysInData = Object.keys(dataIndexes).length;
+const numKeysInData = Object.keys(dataIndexes).length;
 
 
+// Parse a stock data row out of a value. Throws error if fails.
 export const parseStockDataRow = (val: any): StockDataRow => {
     if (!Array.isArray(val)) {
         throw Error("Row is not an array");
@@ -32,40 +35,58 @@ export const parseStockDataRow = (val: any): StockDataRow => {
         throw Error(`Wrong length array. Expected ${numKeysInData}, Got: ${val.length}`);
     }
 
-    const dateNum = Date.parse(val[dataIndexes.date]);
-    const closeLast = parseFloat(val[dataIndexes.closeLast]);
-    const volume = parseInt(val[dataIndexes.volume]);
-    const open = parseFloat(val[dataIndexes.open]);
-    const high = parseFloat(val[dataIndexes.high]);
-    const low = parseFloat(val[dataIndexes.low]);
+    const stockDataRow: StockDataRow = {
+        date: new Date(),
+        closeLast: 0,
+        volume: 0,
+        open: 0,
+        high: 0,
+        low: 0,
+    };
 
-    if (isNaN(closeLast)) {
-        throw Error(`Malformatted 'close/last'. Got ${val[dataIndexes.closeLast]}`);
+    // Parse field by field
+    // Don't allow for NaN values
+
+    const closeLast = val[dataIndexes.closeLast];
+    try {
+        stockDataRow.closeLast = parseMoney(closeLast);
+    } catch (e) {
+        throw Error(`Malformatted 'close/last'. Got ${closeLast}`);
     }
+
+    const low = val[dataIndexes.low];
+    try {
+        stockDataRow.low = parseMoney(low);
+    } catch (e) {
+        throw Error(`Malformatted 'low'. Got ${low}`);
+    }
+
+    const high = val[dataIndexes.high];
+    try {
+        stockDataRow.high = parseMoney(high);
+    } catch (e) {
+        throw Error(`Malformatted 'high'. Got ${high}`);
+    }
+
+    const open = val[dataIndexes.open];
+    try {
+        stockDataRow.open = parseMoney(open);
+    } catch (e) {
+        throw Error(`Malformatted 'open'. Got ${open}`);
+    }
+
+    const volume = parseInt(val[dataIndexes.volume]);
+    const dateNum = Date.parse(val[dataIndexes.date]);
+
     if (isNaN(volume)) {
         throw Error(`Malformatted 'volume'. Got ${val[dataIndexes.volume]}`);
-    }
-    if (isNaN(open)) {
-        throw Error(`Malformatted 'open'. Got ${val[dataIndexes.open]}`);
-    }
-    if (isNaN(high)) {
-        throw Error(`Malformatted 'high'. Got ${val[dataIndexes.high]}`);
-    }
-    if (isNaN(low)) {
-        throw Error(`Malformatted 'low'. Got ${val[dataIndexes.low]}`);
     }
     if (isNaN(dateNum)) {
         throw Error(`Malformatted 'date'. Got ${val[dataIndexes.date]}`);
     }
 
-    const date = new Date(dateNum);
+    stockDataRow.volume = volume;
+    stockDataRow.date = new Date(dateNum);
 
-    return {
-        date,
-        closeLast,
-        volume,
-        open,
-        high,
-        low,
-    };
+    return stockDataRow;
 };

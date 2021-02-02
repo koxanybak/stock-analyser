@@ -4,8 +4,9 @@ import fileUpload from "express-fileupload";
 import { isFileUpload } from "../types/upload";
 import { newErr } from "../utils/error";
 import papa from "papaparse";
-import { parseStockDataRow } from "../types/stockdata";
+import { parseStockDataRow, StockDataRow } from "../types/stockdata";
 import { saveStockData } from "../services/stock";
+import { parseListString } from "../types/string";
 
 const uploadRouter = Router();
 
@@ -25,17 +26,26 @@ uploadRouter.post("/", asyncHandler(async (req: Request, res: Response) => {
     }
     
     // Parse data into typed list
-    const stockData = data.map((el, i) => {
+    const stockDataUndef = data.slice(1).map((el, i) => {
         try {
-            return parseStockDataRow(el);
+            // Papa parses empty rows into a list of length one. Discard them.
+            const list = parseListString(el); // Parse row into a list of strings to check for length
+            if (list.length === 1) {
+                return undefined;
+            }
+
+            return parseStockDataRow(list);
         } catch (e) {
+            // Respond with 400 if a row is malformatted. Could be easily changed to discard the row instead.
             throw newErr(400, `Error at csv row index ${i}: ${e.message}`);
         }
     });
+    // Filter out undef
+    const stockData = stockDataUndef.filter((val) => val !== undefined) as StockDataRow[];
 
     await saveStockData(stockData);
 
-    res.status(200).end();
+    res.status(204).end();
 }));
 
 export default uploadRouter;
