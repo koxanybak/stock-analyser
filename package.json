@@ -8,18 +8,18 @@
     "build": "rm -rf build && tsc --build",
     "start-ts": "NODE_ENV=production ts-node src/index.ts",
     "dev": "NODE_ENV=development ts-node-dev src/index.ts",
-    "start": "NODE_ENV=production node build/src/index.js"
+    "start": "NODE_ENV=production node build/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koxanybak/vincit-assignment.git"
+    "url": "git+https://github.com/koxanybak/stock-analyser.git"
   },
   "author": "Leevi Heikkilä",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/koxanybak/vincit-assignment/issues"
+    "url": "https://github.com/koxanybak/stock-analyser/issues"
   },
-  "homepage": "https://github.com/koxanybak/vincit-assignment#readme",
+  "homepage": "https://github.com/koxanybak/stock-analyser#readme",
   "dependencies": {
     "@types/papaparse": "^5.2.5",
     "express": "^4.17.1",
