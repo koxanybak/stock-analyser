@@ -45,6 +45,7 @@ Date, Close/Last, Volume, Open, High, Low
 The upload endpoint doesn't currently support empty or otherwise malformatted fields. It responds with a 400 error if
 such data is sent.
 Responds with 204 if successful.
+Example data can be found at https://www.nasdaq.com/market-activity/stocks/aapl/historical
 
 **An example response:**
 /api/info
