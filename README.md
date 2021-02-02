@@ -24,6 +24,7 @@ Start in development
 ```sh
 $ npm run dev
 ```
+Listening port can be configured as 'PORT' environment variable. Defaults to 3001.
 
 ### Docs
 **In short:**
