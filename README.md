@@ -27,7 +27,7 @@ $ npm run dev
 
 ### Docs
 **In short:**
-Send valid CSV data to /api/upload and query info about it from /api/upload?start=mm/dd/yy&end=mm/dd/yy
+Send valid CSV data to /api/upload and query info about it from /api/info?start=mm/dd/yy&end=mm/dd/yy
 
 | Endpoint | Type | Body | Query params |
 | ------ | ------ | ------ | ------ |
@@ -50,7 +50,8 @@ Responds with 204 if successful.
 ```
 {
     "longestBullTrend": 10, // The most amount of days in a row the stock price has been rising. (At least one)
-    "volumeAndPriceChange": [ // A list of volumes, and the largest price change within a day.
+    "volumeAndPriceChange": [
+    // A list of volumes, and the largest price change within a day.
     // Ordered first by volume and by price change second.
     
     // NOTE: Don't know why Scrooge wanted a single list sorted like this if he wanted to find out
@@ -69,7 +70,8 @@ Responds with 204 if successful.
         },
         ...
     ],
-    "openToSMA5": [ // A date's open price compared to it's SMA5
+    "openToSMA5": [
+    // A date's open price compared to it's SMA5. Ordered by price change.
     
     // If there are less than 5 dates before a date in the range(start, end),
     // the SMA5 is calculated from less than 5 dates.
